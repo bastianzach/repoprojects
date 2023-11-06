@@ -2,8 +2,8 @@ require 'json'
 require 'net/http'
 require 'uri'
 
-# Function to fetch restaurant data from the API
-def fetch_restaurant_data
+# Function to get the restaurant data from rapidapi
+def get_restaurant_data
   url = URI("https://restaurants-near-me-usa.p.rapidapi.com/restaurants/location/zipcode/43015/1")
 
   http = Net::HTTP.new(url.host, url.port)
@@ -18,21 +18,21 @@ def fetch_restaurant_data
   if response.code == '200'
     return JSON.parse(response.body)['restaurants']
   else
-    puts "Failed to fetch restaurant data. Status code: #{response.code}"
+    puts "Failed to get restaurant data. Status code: #{response.code}"
     return []
   end
 end
 
-# Function to randomly select a restaurant from the API data
+# Randomly select a restaurant from the API data
 def random_restaurant(restaurants)
   return nil if restaurants.empty?
   random_index = rand(restaurants.length)
   restaurants[random_index]
 end
 
-# Simulate a button press to get a random restaurant recommendation from the API
+# Simulate a button press
 def push_button
-  restaurant_data = fetch_restaurant_data
+  restaurant_data = get_restaurant_data
   if restaurant_data.nil?
     puts "No restaurant data available."
     return
@@ -43,7 +43,7 @@ def push_button
   if restaurant
     puts "You should go to #{restaurant['restaurantName']} at #{restaurant['address']}, #{restaurant['cityName']}, #{restaurant['stateName']}!"
   else
-    puts "No restaurants found in the data."
+    puts "No restaurants found."
   end
 end
 
